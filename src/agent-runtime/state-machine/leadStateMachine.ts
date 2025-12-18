@@ -151,6 +151,11 @@ export class LeadStateMachine {
 
   /**
    * Force transition (bypass validation) - use sparingly
+   * WARNING: This bypasses state machine validation. Only use for:
+   * - STOP opt-out handling (immediate, from any state)
+   * - Administrative corrections
+   * - Emergency state recovery
+   * All forced transitions are logged with forced: true metadata.
    */
   forceTransition(newState: LeadState, trigger: string, metadata?: Record<string, unknown>): StateChange {
     const stateChange: StateChange = {
@@ -161,6 +166,11 @@ export class LeadStateMachine {
       timestamp: new Date(),
       metadata: { ...metadata, forced: true },
     };
+
+    // Log forced transition for audit purposes
+    console.warn(
+      `[LeadStateMachine] FORCED TRANSITION: ${this.lead.id} ${this.lead.state} -> ${newState} (trigger: ${trigger})`
+    );
 
     this.lead.state = newState;
     this.lead.stateHistory.push(stateChange);

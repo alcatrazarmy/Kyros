@@ -230,7 +230,9 @@ export class SmsAppointmentWorkflow {
       throw new Error('Cannot transition to initial_contact_sent');
     }
 
-    // Generate message
+    // Generate message using template
+    // Company name defaults to 'Solar Solutions' in SMS_TEMPLATES.initialContact
+    // Future: Make configurable via lead.metadata.companyName or runtime config
     const message = SMS_TEMPLATES.initialContact(lead.firstName);
 
     // Send SMS
@@ -272,6 +274,13 @@ export class SmsAppointmentWorkflow {
     const stateMachine = new LeadStateMachine(lead);
     
     if (!stateMachine.canContact()) {
+      return;
+    }
+
+    // Check quiet hours - don't contact during restricted times
+    const now = new Date();
+    if (this.appointmentService.isQuietHours(now, '21:00', '09:00', 'America/New_York')) {
+      console.log(`[Workflow] Skipping contact for ${lead.firstName} - quiet hours`);
       return;
     }
 
