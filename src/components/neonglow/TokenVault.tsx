@@ -7,7 +7,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Database, Search, Filter } from 'lucide-react';
+import { Plus, Database, Search, Filter, Bot } from 'lucide-react';
+import Link from 'next/link';
 import type { ApiToken } from '@/types';
 import { TokenCard } from './TokenCard';
 import { TokenDetails } from './TokenDetails';
@@ -61,15 +62,27 @@ export function TokenVault({
                 Biometric memory bank for secure token management
               </p>
             </div>
-            <motion.button
-              onClick={onCreate}
-              className="flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium shadow-lg shadow-cyan-500/50"
-              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(0, 255, 255, 0.5)' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Plus className="w-5 h-5" />
-              Create Token
-            </motion.button>
+            <div className="flex items-center gap-3">
+              <motion.button
+                onClick={onCreate}
+                className="flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium shadow-lg shadow-cyan-500/50"
+                whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(0, 255, 255, 0.5)' }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Plus className="w-5 h-5" />
+                Create Token
+              </motion.button>
+              <Link href="/agent">
+                <motion.div
+                  className="flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-green-500 text-white font-medium shadow-lg shadow-purple-500/50 cursor-pointer"
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(176, 38, 255, 0.5)' }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Bot className="w-5 h-5" />
+                  Agent Runtime
+                </motion.div>
+              </Link>
+            </div>
           </div>
 
           {/* Stats */}

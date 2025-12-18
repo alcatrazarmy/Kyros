@@ -1,16 +1,61 @@
-# NeonGlow Memory Core
+# Kyros - Enterprise Solar Operations Platform
 
-> **The Neural Spine of Kyros** - Advanced biometric memory bank for secure API token and project management.
+> **Complete automation platform for solar operations** - Token management, SMS appointment setting, and workflow orchestration.
 
 ## 🌟 Overview
 
-NeonGlow is a highly advanced memory-core interface for the AI dashboard "Kyros." It acts as a biometric memory bank, securely storing, rotating, and masking all sensitive API tokens and project metadata tied to OpenSolar. The system provides a glowing visual interface resembling a holographic vault, where each token appears as a pulsing neon orb with comprehensive metadata.
+Kyros is an enterprise automation platform for solar operations consisting of three integrated layers:
+
+1. **NeonGlow Dashboard** - Visual token management and admin interface
+2. **Communication Layer** - AI-powered language processing (classification, drafting)
+3. **Agent Runtime** - Headless workflow execution for SMS appointment setting
 
 ![NeonGlow Interface](https://github.com/user-attachments/assets/eb174575-f766-400c-acce-f35f47528ae9)
 
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                           KYROS SYSTEM                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────┐       ┌─────────────────────┐             │
+│  │   DASHBOARD (UI)    │       │  COMMUNICATION LAYER │            │
+│  │   NeonGlow Vault    │       │     (Chat SDK)       │            │
+│  │                     │       │                      │            │
+│  │ - Token Management  │       │ - Message Drafting   │            │
+│  │ - Visualization     │       │ - Intent Classification│          │
+│  │ - Manual Overrides  │       │ - OpenAI (language)  │            │
+│  │ - NO workflow logic │       │ - NO decisions       │            │
+│  └──────────┬──────────┘       └──────────┬───────────┘            │
+│             │                             │                        │
+│             │         REST API            │                        │
+│             └─────────────┬───────────────┘                        │
+│                           │                                        │
+│                           ▼                                        │
+│             ┌─────────────────────────────┐                        │
+│             │     AGENT RUNTIME           │                        │
+│             │                             │                        │
+│             │ - Lead State Machine        │                        │
+│             │ - SMS Appointment Setting   │                        │
+│             │ - Workflow Orchestration    │                        │
+│             │ - Retry & Failure Handling  │                        │
+│             └─────────────────────────────┘                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ## ✨ Features
 
-### 🔐 Secure Token Management
+### 🤖 Agent Runtime (NEW)
+- **Lead State Machine**: 15 states tracking the complete lead lifecycle
+- **SMS Appointment Setting**: Automated outreach with consent verification
+- **Intent Classification**: Classify responses (interested, stop, question, etc.)
+- **Appointment Booking**: Deterministic, rule-based calendar integration
+- **Workflow Orchestration**: Retry handling and failure recovery
+- **Real-time Events**: Dashboard updates via event system
+
+### 🔐 NeonGlow Token Management
 - **Visual Token Vault**: Tokens displayed as animated neon orbs with unique colors
 - **Secure Exposure Toggle**: Click to reveal/hide token contents with smooth blur/glow effects
 - **Token Masking**: Automatic masking of sensitive token strings
@@ -95,28 +140,45 @@ The application will be available at [http://localhost:3000](http://localhost:30
 ```
 Kyros/
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── globals.css        # Global styles with Tailwind
-│   │   ├── layout.tsx         # Root layout
-│   │   └── page.tsx           # Main application page
+│   ├── app/                          # Next.js App Router
+│   │   ├── agent/                    # Agent Runtime Dashboard
+│   │   │   └── page.tsx              # Agent management UI
+│   │   ├── api/                      # REST API endpoints
+│   │   │   └── agent/                # Agent Runtime API
+│   │   │       ├── route.ts          # Runtime control
+│   │   │       ├── leads/            # Lead management
+│   │   │       └── sms/              # SMS webhook
+│   │   ├── globals.css               # Global styles
+│   │   ├── layout.tsx                # Root layout
+│   │   └── page.tsx                  # NeonGlow dashboard
+│   ├── agent-runtime/                # 🤖 AGENT RUNTIME LAYER
+│   │   ├── types/                    # Type definitions
+│   │   ├── state-machine/            # Lead state machine
+│   │   ├── services/                 # Core services
+│   │   │   ├── smsService.ts         # SMS sending/receiving
+│   │   │   ├── languageService.ts    # OpenAI language tasks
+│   │   │   ├── appointmentService.ts # Calendar/booking
+│   │   │   └── leadStorage.ts        # Lead persistence
+│   │   ├── workflows/                # Workflow definitions
+│   │   │   └── smsAppointmentWorkflow.ts
+│   │   └── index.ts                  # Runtime core
 │   ├── components/
-│   │   └── neonglow/          # NeonGlow components
+│   │   ├── agent/                    # Agent UI components
+│   │   │   ├── AgentStatus.tsx       # Runtime status
+│   │   │   └── LeadManager.tsx       # Lead management
+│   │   └── neonglow/                 # NeonGlow components
 │   │       ├── NeonOrb.tsx           # Animated token orb
-│   │       ├── TokenCard.tsx         # Token card with controls
-│   │       ├── TokenDetails.tsx      # Detailed token view
-│   │       └── TokenVault.tsx        # Main vault interface
-│   ├── services/
-│   │   ├── tokenService.ts    # Token management service
-│   │   └── openSolarService.ts # OpenSolar API integration
-│   ├── types/
-│   │   └── index.ts           # TypeScript type definitions
-│   └── lib/
-│       └── utils.ts           # Utility functions
-├── public/                     # Static assets
-├── next.config.ts             # Next.js configuration
-├── tailwind.config.ts         # Tailwind CSS configuration
-├── tsconfig.json              # TypeScript configuration
-└── package.json               # Dependencies and scripts
+│   │       ├── TokenCard.tsx         # Token card
+│   │       ├── TokenDetails.tsx      # Token details
+│   │       └── TokenVault.tsx        # Main vault
+│   ├── services/                     # Dashboard services
+│   │   ├── tokenService.ts           # Token management
+│   │   └── openSolarService.ts       # OpenSolar API
+│   ├── types/                        # Dashboard types
+│   └── lib/                          # Utilities
+├── API_CONTRACTS.md                  # API documentation
+├── DEFINITION_OF_DONE.md             # Completion criteria
+└── package.json                      # Dependencies
 ```
 
 ## 🎯 Core Components
