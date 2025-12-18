@@ -97,6 +97,8 @@ export function NeonOrb({
           repeat: Infinity,
           ease: 'easeInOut',
         }}
+        aria-label={`Token ${token.name} - Status: ${token.status}`}
+        type="button"
       >
         {/* Inner glow */}
         <div 

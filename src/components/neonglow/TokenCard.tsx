@@ -109,12 +109,16 @@ export function TokenCard({
                   color: token.color,
                   border: `1px solid ${token.color}40`,
                 }}
+                role="status"
+                aria-label={`Token status: ${token.status}`}
               >
                 {token.status}
               </span>
-              <span className="text-xs text-gray-400">
-                {token.metadata?.environment}
-              </span>
+              {token.metadata?.environment && (
+                <span className="text-xs text-gray-400">
+                  {token.metadata.environment}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -158,6 +162,7 @@ export function TokenCard({
               handleToggleVisibility();
             }}
             className="text-gray-400 hover:text-white transition-colors"
+            aria-label={isTokenVisible ? 'Hide token value' : 'Show token value'}
           >
             {isTokenVisible ? (
               <EyeOff className="w-4 h-4" />
@@ -272,6 +277,7 @@ export function TokenCard({
           }}
           whileHover={token.status === 'active' ? { scale: 1.05 } : {}}
           whileTap={token.status === 'active' ? { scale: 0.95 } : {}}
+          aria-label="Rotate token to generate new value"
         >
           <RefreshCw className="w-4 h-4" />
           Rotate
@@ -291,6 +297,7 @@ export function TokenCard({
           )}
           whileHover={token.status !== 'revoked' ? { scale: 1.05 } : {}}
           whileTap={token.status !== 'revoked' ? { scale: 0.95 } : {}}
+          aria-label="Revoke token to invalidate it"
         >
           <Trash2 className="w-4 h-4" />
           Revoke

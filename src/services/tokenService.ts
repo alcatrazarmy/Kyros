@@ -140,6 +140,10 @@ class TokenMemoryCore {
    * Get token by ID
    */
   getToken(id: string): ApiToken | undefined {
+    if (!id) {
+      console.warn('getToken called with empty id');
+      return undefined;
+    }
     return this.tokens.get(id);
   }
 
@@ -151,6 +155,13 @@ class TokenMemoryCore {
     scope: ApiToken['scope'],
     expiresInDays?: number
   ): ApiToken {
+    if (!name || name.trim() === '') {
+      throw new Error('Token name is required');
+    }
+    if (!scope || scope.length === 0) {
+      throw new Error('At least one scope is required');
+    }
+
     const token: ApiToken = {
       id: generateId(),
       name,
@@ -189,7 +200,15 @@ class TokenMemoryCore {
    */
   rotateToken(id: string): ApiToken | null {
     const token = this.tokens.get(id);
-    if (!token) return null;
+    if (!token) {
+      console.warn(`Token with id ${id} not found for rotation`);
+      return null;
+    }
+
+    if (token.status === 'revoked') {
+      console.warn(`Cannot rotate revoked token ${id}`);
+      return null;
+    }
 
     const newToken = 'sk_' + Math.random().toString(36).substring(2, 34);
     const updatedToken: ApiToken = {
@@ -220,7 +239,15 @@ class TokenMemoryCore {
    */
   revokeToken(id: string): boolean {
     const token = this.tokens.get(id);
-    if (!token) return false;
+    if (!token) {
+      console.warn(`Token with id ${id} not found for revocation`);
+      return false;
+    }
+
+    if (token.status === 'revoked') {
+      console.info(`Token ${id} is already revoked`);
+      return true;
+    }
 
     const updatedToken: ApiToken = {
       ...token,
