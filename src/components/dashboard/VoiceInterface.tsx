@@ -151,10 +151,11 @@ export function VoiceInterface({
     setIsListening(!isListening);
     
     if (!isListening) {
-      // Simulate voice recognition starting
+      // Simulate voice recognition - in production, this would use Web Speech API
+      // For demo purposes, we simulate listening and then stop
       setTimeout(() => {
         setIsListening(false);
-        setInputText('Kyros, show me hot leads');
+        // Note: In production, this would capture actual speech input
       }, 2000);
     }
   };

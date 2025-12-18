@@ -150,8 +150,16 @@ class VoiceService {
     
     // Find matching trigger phrase
     let matchedAction = 'unknown';
+    
+    // Check if input starts with 'kyros' or contains command keywords
+    const hasKyrosPrefix = normalizedInput.startsWith('kyros');
+    const commandPart = hasKyrosPrefix 
+      ? normalizedInput.replace(/^kyros[,]?\s*/, '') 
+      : normalizedInput;
+    
     for (const [phrase, action] of Object.entries(TRIGGER_PHRASES)) {
-      if (normalizedInput.includes(phrase.replace('kyros ', ''))) {
+      const phraseCommand = phrase.replace('kyros ', '');
+      if (commandPart.includes(phraseCommand)) {
         matchedAction = action;
         break;
       }

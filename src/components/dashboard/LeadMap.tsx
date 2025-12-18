@@ -60,18 +60,25 @@ export function LeadMap({
       try {
         const mapboxgl = (await import('mapbox-gl')).default;
 
-        // Use a public token or placeholder - in production, use env variable
-        mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 'pk.placeholder';
-
-        // If no valid token, show a placeholder map
-        if (!process.env.NEXT_PUBLIC_MAPBOX_TOKEN) {
+        // Check for Mapbox token - if not available, show placeholder
+        const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+        if (!mapboxToken) {
           setMapError('Map requires Mapbox token. Set NEXT_PUBLIC_MAPBOX_TOKEN in environment.');
           setIsMapLoaded(true);
           return;
         }
 
+        mapboxgl.accessToken = mapboxToken;
+
+        const container = mapContainerRef.current;
+        if (!container) {
+          setMapError('Map container not available.');
+          setIsMapLoaded(true);
+          return;
+        }
+
         const map = new mapboxgl.Map({
-          container: mapContainerRef.current!,
+          container,
           style: 'mapbox://styles/mapbox/dark-v11',
           center: [-122.4194, 37.7749], // San Francisco
           zoom: 9,
@@ -109,12 +116,15 @@ export function LeadMap({
     if (!mapRef.current || !isMapLoaded || mapError) return;
 
     const updateMarkers = async () => {
+      const map = mapRef.current;
+      if (!map) return;
+      
       const mapboxgl = (await import('mapbox-gl')).default;
       // Remove existing markers
       markersRef.current.forEach(marker => marker.remove());
       markersRef.current = [];
       // Add new markers
-      addMarkers(mapboxgl, mapRef.current!, leads);
+      addMarkers(mapboxgl, map, leads);
     };
 
     updateMarkers();

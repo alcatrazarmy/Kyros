@@ -266,14 +266,15 @@ class LeadService {
     }
 
     if (filter.priority && filter.priority.length > 0) {
-      results = results.filter(lead => filter.priority!.includes(lead.priority));
+      results = results.filter(lead => filter.priority?.includes(lead.priority));
     }
 
     if (filter.region) {
+      const regionLower = filter.region.toLowerCase();
       results = results.filter(
         lead => 
-          lead.location.city.toLowerCase().includes(filter.region!.toLowerCase()) ||
-          lead.location.state.toLowerCase().includes(filter.region!.toLowerCase())
+          lead.location.city.toLowerCase().includes(regionLower) ||
+          lead.location.state.toLowerCase().includes(regionLower)
       );
     }
 
