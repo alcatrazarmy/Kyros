@@ -10,7 +10,10 @@ import type {
   TokenInteraction,
   OpenSolarProject 
 } from '@/types';
-import { generateId, generateNeonColor } from '@/lib/utils';
+import { generateId, generateNeonColor, generateTokenString } from '@/lib/utils';
+
+// Constants
+const MAX_INTERACTION_HISTORY = 100; // Keep last 100 interactions
 
 /**
  * Mock token storage (in production, this would be a secure backend)
@@ -29,7 +32,7 @@ class TokenMemoryCore {
       {
         id: generateId(),
         name: 'Production API Key',
-        token: 'sk_prod_' + Math.random().toString(36).substring(2, 34),
+        token: generateTokenString('sk_prod'),
         scope: ['read', 'write', 'api'],
         status: 'active',
         createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -68,7 +71,7 @@ class TokenMemoryCore {
       {
         id: generateId(),
         name: 'Development Token',
-        token: 'sk_dev_' + Math.random().toString(36).substring(2, 34),
+        token: generateTokenString('sk_dev'),
         scope: ['read', 'write'],
         status: 'active',
         createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
@@ -96,7 +99,7 @@ class TokenMemoryCore {
       {
         id: generateId(),
         name: 'Admin Access Key',
-        token: 'sk_admin_' + Math.random().toString(36).substring(2, 34),
+        token: generateTokenString('sk_admin'),
         scope: ['admin', 'read', 'write', 'billing'],
         status: 'active',
         createdAt: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000),
@@ -165,7 +168,7 @@ class TokenMemoryCore {
     const token: ApiToken = {
       id: generateId(),
       name,
-      token: 'sk_' + Math.random().toString(36).substring(2, 34),
+      token: generateTokenString('sk'),
       scope,
       status: 'active',
       createdAt: new Date(),
@@ -210,7 +213,7 @@ class TokenMemoryCore {
       return null;
     }
 
-    const newToken = 'sk_' + Math.random().toString(36).substring(2, 34);
+    const newToken = generateTokenString('sk');
     const updatedToken: ApiToken = {
       ...token,
       token: newToken,
@@ -312,7 +315,7 @@ class TokenMemoryCore {
 
     const updatedToken: ApiToken = {
       ...token,
-      interactionHistory: [interaction, ...token.interactionHistory].slice(0, 100), // Keep last 100
+      interactionHistory: [interaction, ...token.interactionHistory].slice(0, MAX_INTERACTION_HISTORY),
       lastUsed: new Date(),
     };
 

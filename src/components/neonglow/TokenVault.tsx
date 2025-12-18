@@ -5,7 +5,7 @@
  * Main interface for the NeonGlow memory-core system
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Database, Search, Filter } from 'lucide-react';
 import type { ApiToken } from '@/types';
