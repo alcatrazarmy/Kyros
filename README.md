@@ -1,10 +1,12 @@
 # NeonGlow Memory Core
 
-> **The Neural Spine of Kyros** - Advanced biometric memory bank for secure API token and project management.
+> **The Neural Spine of Kyros** — Advanced biometric memory bank for secure API token and project management.
 
 ## 🌟 Overview
 
-NeonGlow is a highly advanced memory-core interface for the AI dashboard "Kyros." It acts as a biometric memory bank, securely storing, rotating, and masking all sensitive API tokens and project metadata tied to OpenSolar. The system provides a glowing visual interface resembling a holographic vault, where each token appears as a pulsing neon orb with comprehensive metadata.
+NeonGlow is a highly advanced memory-core interface for the AI dashboard **Kyros**. It serves as a biometric memory bank that securely stores, rotates, and masks all sensitive API tokens and project metadata tied to OpenSolar.
+
+The system provides a glowing visual interface resembling a holographic vault, where each token appears as a **pulsing neon orb** with comprehensive metadata.
 
 ![NeonGlow Interface](https://github.com/user-attachments/assets/eb174575-f766-400c-acce-f35f47528ae9)
 
