@@ -97,7 +97,8 @@ export function NeonOrb({
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        aria-label={`Token ${token.name} - Status: ${token.status}`}
+        aria-label={`View details for ${token.name}`}
+        aria-describedby={`token-status-${token.id}`}
         type="button"
       >
         {/* Inner glow */}
@@ -117,6 +118,11 @@ export function NeonOrb({
             opacity: 0.8,
           }}
         />
+        
+        {/* Hidden status text for screen readers */}
+        <span id={`token-status-${token.id}`} className="sr-only">
+          Status: {token.status}
+        </span>
 
         {/* Status indicator */}
         {token.status === 'rotating' && (
