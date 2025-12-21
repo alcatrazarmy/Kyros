@@ -3,6 +3,9 @@
  * Core types for the biometric memory bank system
  */
 
+// Re-export integration types for easy access
+export * from './integration';
+
 export type TokenScope = 
   | 'read' 
   | 'write' 
