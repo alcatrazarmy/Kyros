@@ -242,7 +242,7 @@ export function TokenCard({
       </div>
 
       {/* Rotation Info */}
-      {token.metadata?.rotationCount && token.metadata.rotationCount > 0 && (
+      {token.metadata?.rotationCount !== undefined && token.metadata.rotationCount > 0 && (
         <div className="mb-4 text-xs text-gray-400">
           Rotated {token.metadata.rotationCount} time(s)
           {token.metadata.lastRotation && (
