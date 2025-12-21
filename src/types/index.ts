@@ -37,6 +37,18 @@ export interface ApiEndpoint {
   accessCount: number;
 }
 
+export interface ProjectMetadata {
+  panels?: number;
+  inverterType?: string;
+  batteryStorage?: boolean;
+  batteryCapacity?: number;
+  [key: string]: string | number | boolean | undefined;
+}
+
+export interface InteractionMetadata {
+  [key: string]: string | number | boolean | null | undefined;
+}
+
 export interface TokenInteraction {
   id: string;
   timestamp: Date;
@@ -44,7 +56,7 @@ export interface TokenInteraction {
   statusCode: number;
   responseTime: number;
   success: boolean;
-  metadata?: Record<string, any>;
+  metadata?: InteractionMetadata;
 }
 
 export interface AuditEntry {
@@ -74,7 +86,7 @@ export interface OpenSolarProject {
   };
   systemSize?: number;
   estimatedCost?: number;
-  metadata?: Record<string, any>;
+  metadata?: ProjectMetadata;
 }
 
 export interface ApiToken {
@@ -98,12 +110,16 @@ export interface ApiToken {
   };
 }
 
+export interface MemoryRecallData {
+  [key: string]: string | number | boolean | object | null | undefined;
+}
+
 export interface MemoryRecall {
   id: string;
   timestamp: Date;
   type: 'log' | 'project_status' | 'audit' | 'interaction';
   tokenId: string;
-  data: any;
+  data: MemoryRecallData;
   query?: string;
 }
 

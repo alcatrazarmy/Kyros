@@ -90,6 +90,67 @@ npm run lint
 
 The application will be available at [http://localhost:3000](http://localhost:3000)
 
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+The easiest way to deploy this Next.js application is to use [Vercel](https://vercel.com).
+
+#### Quick Deploy
+
+Click the button below to deploy directly to Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/alcatrazarmy/Kyros)
+
+#### Manual Deployment
+
+1. **Install Vercel CLI** (optional):
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Deploy via Vercel CLI**:
+   ```bash
+   # Login to Vercel
+   vercel login
+   
+   # Deploy to production
+   vercel --prod
+   ```
+
+3. **Deploy via Vercel Dashboard**:
+   - Visit [vercel.com](https://vercel.com) and sign in
+   - Click "Add New Project"
+   - Import your GitHub repository
+   - Configure project settings (defaults work for this project)
+   - Click "Deploy"
+
+#### Environment Variables
+
+This project currently doesn't require any environment variables for basic functionality. If you integrate with the real OpenSolar API in the future, configure the following in the Vercel dashboard:
+
+- `OPENSOLAR_API_KEY` - Your OpenSolar API key
+- `OPENSOLAR_API_URL` - OpenSolar API endpoint URL
+- `NEXT_PUBLIC_APP_URL` - Your application URL (optional)
+
+#### Build Configuration
+
+The project uses the following build configuration (defined in `vercel.json`):
+- **Framework**: Next.js (auto-detected)
+- **Build Command**: `npm run build`
+- **Install Command**: `npm install`
+- **Output Directory**: `.next`
+
+#### Post-Deployment
+
+After deployment, Vercel will:
+- ✅ Automatically build your application
+- ✅ Provide a production URL (e.g., `kyros.vercel.app`)
+- ✅ Enable automatic deployments for every push to the main branch
+- ✅ Create preview deployments for pull requests
+- ✅ Set up SSL/HTTPS automatically
+- ✅ Enable CDN caching for optimal performance
+
 ## 📁 Project Structure
 
 ```

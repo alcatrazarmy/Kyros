@@ -10,7 +10,10 @@ import type {
   TokenInteraction,
   OpenSolarProject 
 } from '@/types';
-import { generateId, generateNeonColor } from '@/lib/utils';
+import { generateId, generateNeonColor, generateTokenString } from '@/lib/utils';
+
+// Constants
+const MAX_INTERACTION_HISTORY = 100; // Keep last 100 interactions
 
 /**
  * Mock token storage (in production, this would be a secure backend)
@@ -29,7 +32,7 @@ class TokenMemoryCore {
       {
         id: generateId(),
         name: 'Production API Key',
-        token: 'sk_prod_' + Math.random().toString(36).substring(2, 34),
+        token: generateTokenString('sk_prod'),
         scope: ['read', 'write', 'api'],
         status: 'active',
         createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -68,7 +71,7 @@ class TokenMemoryCore {
       {
         id: generateId(),
         name: 'Development Token',
-        token: 'sk_dev_' + Math.random().toString(36).substring(2, 34),
+        token: generateTokenString('sk_dev'),
         scope: ['read', 'write'],
         status: 'active',
         createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
@@ -96,7 +99,7 @@ class TokenMemoryCore {
       {
         id: generateId(),
         name: 'Admin Access Key',
-        token: 'sk_admin_' + Math.random().toString(36).substring(2, 34),
+        token: generateTokenString('sk_admin'),
         scope: ['admin', 'read', 'write', 'billing'],
         status: 'active',
         createdAt: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000),
@@ -140,6 +143,10 @@ class TokenMemoryCore {
    * Get token by ID
    */
   getToken(id: string): ApiToken | undefined {
+    if (!id) {
+      console.warn('getToken called with empty id');
+      return undefined;
+    }
     return this.tokens.get(id);
   }
 
@@ -151,10 +158,17 @@ class TokenMemoryCore {
     scope: ApiToken['scope'],
     expiresInDays?: number
   ): ApiToken {
+    if (!name || name.trim() === '') {
+      throw new Error('Token name is required');
+    }
+    if (!scope || scope.length === 0) {
+      throw new Error('At least one scope is required');
+    }
+
     const token: ApiToken = {
       id: generateId(),
       name,
-      token: 'sk_' + Math.random().toString(36).substring(2, 34),
+      token: generateTokenString('sk'),
       scope,
       status: 'active',
       createdAt: new Date(),
@@ -189,9 +203,17 @@ class TokenMemoryCore {
    */
   rotateToken(id: string): ApiToken | null {
     const token = this.tokens.get(id);
-    if (!token) return null;
+    if (!token) {
+      console.warn(`Token with id ${id} not found for rotation`);
+      return null;
+    }
 
-    const newToken = 'sk_' + Math.random().toString(36).substring(2, 34);
+    if (token.status === 'revoked') {
+      console.warn(`Cannot rotate revoked token ${id}`);
+      return null;
+    }
+
+    const newToken = generateTokenString('sk');
     const updatedToken: ApiToken = {
       ...token,
       token: newToken,
@@ -220,7 +242,15 @@ class TokenMemoryCore {
    */
   revokeToken(id: string): boolean {
     const token = this.tokens.get(id);
-    if (!token) return false;
+    if (!token) {
+      console.warn(`Token with id ${id} not found for revocation`);
+      return false;
+    }
+
+    if (token.status === 'revoked') {
+      console.info(`Token ${id} is already revoked`);
+      return true;
+    }
 
     const updatedToken: ApiToken = {
       ...token,
@@ -285,7 +315,7 @@ class TokenMemoryCore {
 
     const updatedToken: ApiToken = {
       ...token,
-      interactionHistory: [interaction, ...token.interactionHistory].slice(0, 100), // Keep last 100
+      interactionHistory: [interaction, ...token.interactionHistory].slice(0, MAX_INTERACTION_HISTORY),
       lastUsed: new Date(),
     };
 

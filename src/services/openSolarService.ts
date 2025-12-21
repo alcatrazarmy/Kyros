@@ -97,8 +97,18 @@ class OpenSolarService {
    * Fetch single project by ID
    */
   async fetchProject(projectId: string): Promise<OpenSolarProject | null> {
-    const projects = await this.fetchProjects();
-    return projects.find(p => p.id === projectId) || null;
+    if (!projectId) {
+      console.warn('fetchProject called with empty projectId');
+      return null;
+    }
+    
+    try {
+      const projects = await this.fetchProjects();
+      return projects.find(p => p.id === projectId) || null;
+    } catch (error) {
+      console.error('Error fetching project:', error);
+      return null;
+    }
   }
 
   /**
@@ -125,6 +135,10 @@ class OpenSolarService {
    * Validate API token
    */
   async validateToken(token: string): Promise<boolean> {
+    if (!token || token.trim() === '') {
+      return false;
+    }
+    
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 200));
     

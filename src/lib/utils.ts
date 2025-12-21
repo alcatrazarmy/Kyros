@@ -94,3 +94,11 @@ export function getStatusColor(status: string): string {
       return '#4D4DFF'; // blue
   }
 }
+
+/**
+ * Generate a random token string
+ */
+export function generateTokenString(prefix: string = 'sk'): string {
+  const randomPart = Math.random().toString(36).substring(2, 34);
+  return `${prefix}_${randomPart}`;
+}

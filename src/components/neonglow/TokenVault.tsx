@@ -5,13 +5,12 @@
  * Main interface for the NeonGlow memory-core system
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Database, Search, Filter } from 'lucide-react';
 import type { ApiToken } from '@/types';
 import { TokenCard } from './TokenCard';
 import { TokenDetails } from './TokenDetails';
-import { cn } from '@/lib/utils';
 
 interface TokenVaultProps {
   tokens: ApiToken[];
@@ -66,6 +65,7 @@ export function TokenVault({
               className="flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium shadow-lg shadow-cyan-500/50"
               whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(0, 255, 255, 0.5)' }}
               whileTap={{ scale: 0.95 }}
+              aria-label="Create new API token"
             >
               <Plus className="w-5 h-5" />
               Create Token
@@ -112,14 +112,16 @@ export function TokenVault({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 rounded-lg bg-black/40 border border-gray-700 text-white placeholder-gray-500 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+                aria-label="Search tokens by name or token value"
               />
             </div>
             <div className="relative">
               <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <select
                 value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value as any)}
+                onChange={(e) => setFilterStatus(e.target.value as 'all' | 'active' | 'revoked' | 'expired')}
                 className="pl-10 pr-8 py-2 rounded-lg bg-black/40 border border-gray-700 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 appearance-none cursor-pointer"
+                aria-label="Filter tokens by status"
               >
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
