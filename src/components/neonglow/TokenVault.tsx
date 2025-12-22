@@ -11,6 +11,7 @@ import { Plus, Database, Search, Filter } from 'lucide-react';
 import type { ApiToken } from '@/types';
 import { TokenCard } from './TokenCard';
 import { TokenDetails } from './TokenDetails';
+import { StatCard } from '@/components/shared';
 
 interface TokenVaultProps {
   tokens: ApiToken[];
@@ -80,25 +81,14 @@ export function TokenVault({
               { label: 'Revoked', value: tokens.filter(t => t.status === 'revoked').length, color: '#FF0000' },
               { label: 'Endpoints', value: tokens.reduce((sum, t) => sum + t.activeEndpoints.length, 0), color: '#B026FF' },
             ].map((stat, i) => (
-              <motion.div
+              <StatCard
                 key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="p-4 rounded-lg bg-black/40 border backdrop-blur-sm"
-                style={{
-                  borderColor: stat.color + '30',
-                  boxShadow: `0 0 20px ${stat.color}10`,
-                }}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <Database className="w-4 h-4" style={{ color: stat.color }} />
-                  <div className="text-xs text-gray-400">{stat.label}</div>
-                </div>
-                <div className="text-2xl font-bold" style={{ color: stat.color }}>
-                  {stat.value}
-                </div>
-              </motion.div>
+                label={stat.label}
+                value={stat.value}
+                color={stat.color}
+                icon={<Database className="w-4 h-4" />}
+                delay={i * 0.1}
+              />
             ))}
           </div>
 

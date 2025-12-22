@@ -4,7 +4,7 @@
  */
 
 import type { OpenSolarProject } from '@/types';
-import { generateId } from '@/lib/utils';
+import { generateId, isValidString } from '@/lib/utils';
 
 /**
  * Mock OpenSolar API client
@@ -97,8 +97,8 @@ class OpenSolarService {
    * Fetch single project by ID
    */
   async fetchProject(projectId: string): Promise<OpenSolarProject | null> {
-    if (!projectId) {
-      console.warn('fetchProject called with empty projectId');
+    if (!isValidString(projectId)) {
+      console.warn('fetchProject called with invalid projectId');
       return null;
     }
     
@@ -135,7 +135,7 @@ class OpenSolarService {
    * Validate API token
    */
   async validateToken(token: string): Promise<boolean> {
-    if (!token || token.trim() === '') {
+    if (!isValidString(token)) {
       return false;
     }
     

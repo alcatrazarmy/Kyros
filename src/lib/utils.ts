@@ -102,3 +102,35 @@ export function generateTokenString(prefix: string = 'sk'): string {
   const randomPart = Math.random().toString(36).substring(2, 34);
   return `${prefix}_${randomPart}`;
 }
+
+/**
+ * Create neon style object for consistent styling
+ */
+export function createNeonStyle(
+  color: string,
+  options: {
+    bgOpacity?: string;
+    borderOpacity?: string;
+    withGlow?: boolean;
+  } = {}
+) {
+  const { bgOpacity = '10', borderOpacity = '20', withGlow = false } = options;
+  
+  return {
+    backgroundColor: color + bgOpacity,
+    color: color,
+    border: `1px solid ${color}${borderOpacity}`,
+    ...(withGlow && {
+      boxShadow: `0 0 20px ${color}20`,
+    }),
+  };
+}
+
+/**
+ * Validate if a string is not empty or null
+ * @param value - The value to validate
+ * @returns True if value is a non-empty string, false otherwise
+ */
+export function isValidString(value: string | null | undefined): value is string {
+  return typeof value === 'string' && value.trim() !== '';
+}
