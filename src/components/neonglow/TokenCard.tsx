@@ -17,7 +17,9 @@ import {
   Zap,
   Shield,
 } from 'lucide-react';
-import { cn, maskToken, timeAgo } from '@/lib/utils';
+import { cn, maskToken, timeAgo, createNeonStyle } from '@/lib/utils';
+import { useRipple } from '@/hooks/useRipple';
+import { IconBadge } from '@/components/shared/IconBadge';
 import type { ApiToken } from '@/types';
 import { NeonOrb } from './NeonOrb';
 
@@ -37,19 +39,17 @@ export function TokenCard({
   isSelected = false,
 }: TokenCardProps) {
   const [isTokenVisible, setIsTokenVisible] = useState(false);
-  const [showRipple, setShowRipple] = useState(false);
+  const { showRipple, triggerRipple } = useRipple();
 
   const handleToggleVisibility = () => {
     setIsTokenVisible(!isTokenVisible);
-    setShowRipple(true);
-    setTimeout(() => setShowRipple(false), 600);
+    triggerRipple();
   };
 
   const handleRotate = () => {
     if (onRotate) {
       onRotate(token.id);
-      setShowRipple(true);
-      setTimeout(() => setShowRipple(false), 600);
+      triggerRipple();
     }
   };
 
@@ -62,8 +62,7 @@ export function TokenCard({
   const handleCardClick = () => {
     if (onSelect) {
       onSelect(token.id);
-      setShowRipple(true);
-      setTimeout(() => setShowRipple(false), 600);
+      triggerRipple();
     }
   };
 
@@ -104,11 +103,7 @@ export function TokenCard({
             <div className="flex items-center gap-2 mt-1">
               <span 
                 className="text-xs px-2 py-1 rounded-full"
-                style={{
-                  backgroundColor: token.color + '20',
-                  color: token.color,
-                  border: `1px solid ${token.color}40`,
-                }}
+                style={createNeonStyle(token.color, { bgOpacity: '20', borderOpacity: '40' })}
                 role="status"
                 aria-label={`Token status: ${token.status}`}
               >
@@ -126,26 +121,10 @@ export function TokenCard({
         {/* Status Icons */}
         <div className="flex gap-2">
           {token.status === 'active' && (
-            <div 
-              className="p-2 rounded-lg"
-              style={{
-                backgroundColor: token.color + '10',
-                color: token.color,
-              }}
-            >
-              <Zap className="w-4 h-4" />
-            </div>
+            <IconBadge icon={<Zap className="w-4 h-4" />} color={token.color} />
           )}
           {token.scope.includes('admin') && (
-            <div 
-              className="p-2 rounded-lg"
-              style={{
-                backgroundColor: token.color + '10',
-                color: token.color,
-              }}
-            >
-              <Shield className="w-4 h-4" />
-            </div>
+            <IconBadge icon={<Shield className="w-4 h-4" />} color={token.color} />
           )}
         </div>
       </div>

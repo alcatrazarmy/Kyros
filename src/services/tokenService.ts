@@ -10,7 +10,7 @@ import type {
   TokenInteraction,
   OpenSolarProject 
 } from '@/types';
-import { generateId, generateNeonColor, generateTokenString } from '@/lib/utils';
+import { generateId, generateNeonColor, generateTokenString, isValidString } from '@/lib/utils';
 
 // Constants
 const MAX_INTERACTION_HISTORY = 100; // Keep last 100 interactions
@@ -143,8 +143,8 @@ class TokenMemoryCore {
    * Get token by ID
    */
   getToken(id: string): ApiToken | undefined {
-    if (!id) {
-      console.warn('getToken called with empty id');
+    if (!isValidString(id)) {
+      console.warn('getToken called with invalid id');
       return undefined;
     }
     return this.tokens.get(id);
@@ -158,7 +158,7 @@ class TokenMemoryCore {
     scope: ApiToken['scope'],
     expiresInDays?: number
   ): ApiToken {
-    if (!name || name.trim() === '') {
+    if (!isValidString(name)) {
       throw new Error('Token name is required');
     }
     if (!scope || scope.length === 0) {

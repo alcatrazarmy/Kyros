@@ -20,6 +20,8 @@ import {
 import type { ApiToken } from '@/types';
 import { formatDate, timeAgo, cn } from '@/lib/utils';
 import { NeonOrb } from './NeonOrb';
+import { NeonContainer } from '@/components/shared/NeonContainer';
+import { EmptyState } from '@/components/shared/EmptyState';
 
 interface TokenDetailsProps {
   token: ApiToken;
@@ -92,14 +94,12 @@ export function TokenDetails({ token }: TokenDetailsProps) {
           <div className="space-y-2">
             {token.activeEndpoints.length > 0 ? (
               token.activeEndpoints.map((endpoint) => (
-                <motion.div
+                <NeonContainer
                   key={endpoint.id}
+                  color={token.color}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 rounded-lg bg-black/40 border"
-                  style={{
-                    borderColor: token.color + '20',
-                  }}
+                  className="p-3"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
@@ -122,12 +122,10 @@ export function TokenDetails({ token }: TokenDetailsProps) {
                       <span>{timeAgo(endpoint.lastAccessed)}</span>
                     )}
                   </div>
-                </motion.div>
+                </NeonContainer>
               ))
             ) : (
-              <div className="text-sm text-gray-500 text-center py-4">
-                No active endpoints
-              </div>
+              <EmptyState message="No active endpoints" />
             )}
           </div>
         </section>
@@ -141,14 +139,12 @@ export function TokenDetails({ token }: TokenDetailsProps) {
           <div className="space-y-2">
             {token.linkedProjects.length > 0 ? (
               token.linkedProjects.map((project) => (
-                <motion.div
+                <NeonContainer
                   key={project.id}
+                  color={token.color}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 rounded-lg bg-black/40 border"
-                  style={{
-                    borderColor: token.color + '20',
-                  }}
+                  className="p-3"
                 >
                   <div className="font-medium text-white mb-1">{project.name}</div>
                   <div className="flex items-center gap-3 text-xs text-gray-400">
@@ -173,12 +169,10 @@ export function TokenDetails({ token }: TokenDetailsProps) {
                       </span>
                     )}
                   </div>
-                </motion.div>
+                </NeonContainer>
               ))
             ) : (
-              <div className="text-sm text-gray-500 text-center py-4">
-                No linked projects
-              </div>
+              <EmptyState message="No linked projects" />
             )}
           </div>
         </section>
@@ -192,14 +186,12 @@ export function TokenDetails({ token }: TokenDetailsProps) {
           <div className="space-y-2">
             {token.interactionHistory.length > 0 ? (
               token.interactionHistory.slice(0, 5).map((interaction) => (
-                <motion.div
+                <NeonContainer
                   key={interaction.id}
+                  color={token.color}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 rounded-lg bg-black/40 border"
-                  style={{
-                    borderColor: token.color + '20',
-                  }}
+                  className="p-3"
                 >
                   <div className="flex items-start justify-between mb-1">
                     <div className="flex items-center gap-2">
@@ -227,12 +219,10 @@ export function TokenDetails({ token }: TokenDetailsProps) {
                     <span>{interaction.responseTime}ms</span>
                     <span>{timeAgo(interaction.timestamp)}</span>
                   </div>
-                </motion.div>
+                </NeonContainer>
               ))
             ) : (
-              <div className="text-sm text-gray-500 text-center py-4">
-                No interaction history
-              </div>
+              <EmptyState message="No interaction history" />
             )}
           </div>
         </section>
@@ -246,14 +236,12 @@ export function TokenDetails({ token }: TokenDetailsProps) {
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {token.auditTrail.length > 0 ? (
               token.auditTrail.map((entry) => (
-                <motion.div
+                <NeonContainer
                   key={entry.id}
+                  color={token.color}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 rounded-lg bg-black/40 border"
-                  style={{
-                    borderColor: token.color + '20',
-                  }}
+                  className="p-3"
                 >
                   <div className="flex items-start justify-between mb-1">
                     <div className="flex items-center gap-2">
@@ -274,12 +262,10 @@ export function TokenDetails({ token }: TokenDetailsProps) {
                       {entry.details}
                     </div>
                   )}
-                </motion.div>
+                </NeonContainer>
               ))
             ) : (
-              <div className="text-sm text-gray-500 text-center py-4">
-                No audit entries
-              </div>
+              <EmptyState message="No audit entries" />
             )}
           </div>
         </section>
