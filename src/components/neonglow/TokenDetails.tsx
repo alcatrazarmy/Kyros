@@ -20,8 +20,7 @@ import {
 import type { ApiToken } from '@/types';
 import { formatDate, timeAgo, cn } from '@/lib/utils';
 import { NeonOrb } from './NeonOrb';
-import { NeonContainer } from '@/components/shared/NeonContainer';
-import { EmptyState } from '@/components/shared/EmptyState';
+import { NeonContainer, EmptyState, NeonBadge } from '@/components/shared';
 
 interface TokenDetailsProps {
   token: ApiToken;
@@ -106,15 +105,13 @@ export function TokenDetails({ token }: TokenDetailsProps) {
                       <div className="font-medium text-white">{endpoint.name}</div>
                       <div className="text-xs text-gray-400 font-mono">{endpoint.url}</div>
                     </div>
-                    <span 
-                      className="text-xs px-2 py-1 rounded font-mono"
-                      style={{
-                        backgroundColor: token.color + '20',
-                        color: token.color,
-                      }}
+                    <NeonBadge 
+                      color={token.color}
+                      bgOpacity="20"
+                      className="font-mono"
                     >
                       {endpoint.method}
-                    </span>
+                    </NeonBadge>
                   </div>
                   <div className="flex items-center justify-between text-xs text-gray-400">
                     <span>{endpoint.accessCount.toLocaleString()} calls</span>
