@@ -17,7 +17,7 @@ import {
   Zap,
   Shield,
 } from 'lucide-react';
-import { cn, maskToken, timeAgo, createNeonStyle } from '@/lib/utils';
+import { cn, maskToken, timeAgo } from '@/lib/utils';
 import { useRipple } from '@/hooks/useRipple';
 import { IconBadge, NeonBadge } from '@/components/shared';
 import type { ApiToken } from '@/types';

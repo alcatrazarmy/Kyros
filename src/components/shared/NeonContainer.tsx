@@ -7,6 +7,20 @@ import { ReactNode } from 'react';
 import { motion, MotionProps } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+/**
+ * Props for NeonContainer component
+ * 
+ * Note: 'style' is omitted from MotionProps because the component manages
+ * styling internally through color props to ensure consistent neon theming.
+ * Additional motion props like animations, transitions, etc. are still supported.
+ * 
+ * @property children - Content to render inside the container
+ * @property color - Hex color code for neon effect (e.g., '#00FFFF')
+ * @property className - Additional CSS classes
+ * @property opacity - Opacity suffix for background color (e.g., '10' for 10% opacity)
+ * @property borderOpacity - Opacity suffix for border color (e.g., '20' for 20% opacity)
+ * @property glowIntensity - Intensity of the glow effect
+ */
 interface NeonContainerProps extends Omit<MotionProps, 'style'> {
   children: ReactNode;
   color: string;

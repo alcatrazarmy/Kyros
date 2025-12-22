@@ -128,6 +128,8 @@ export function createNeonStyle(
 
 /**
  * Validate if a string is not empty or null
+ * @param value - The value to validate
+ * @returns True if value is a non-empty string, false otherwise
  */
 export function isValidString(value: string | null | undefined): value is string {
   return typeof value === 'string' && value.trim() !== '';
