@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "mapbox-gl/dist/mapbox-gl.css";
 
 /* Accessibility - Screen reader only */
 .sr-only {
